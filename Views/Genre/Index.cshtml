@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MVCMovieInfo.Models.Genre>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Genres</h1>
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+    <a class="btn btn-primary" asp-action="Create"><i class="fa-solid fa-square-plus"></i> Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="action-icons">
+                    <a asp-action="Edit" asp-route-id="@item.GenreId" class="text-warning">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.GenreId" class="text-success">
+                        <i class="fa-sharp fa-solid fa-circle-info"></i> Details
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.GenreId" class="text-danger">
+                        <i class="fa-solid fa-trash "></i> Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
