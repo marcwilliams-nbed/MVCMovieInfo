@@ -160,6 +160,32 @@ namespace MVCMovieInfo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //GET:  MovieGenre - mwilliams:
+        public async Task<IActionResult> MovieGenre(int? id)
+        {
+            if (id == null || _context.Movie == null)
+            {
+                return NotFound();
+            }
+
+            //Get Genre Name
+            var MovieGenre = _context.Genre.Where(g => g.GenreId == id);
+
+            //Save the Genre Name within a ViewData object for use inside of view
+            ViewData["Genre"] = MovieGenre.Single().Name;
+
+            //All movies for specific genre
+            var applicationDbContext = _context.Movie
+                .Include(m => m.Genre)
+                .Where(m => m.GenreId == id);
+
+            //Save the Genre Name within a ViewData object for use inside of view
+            ViewData["Genre"] = MovieGenre.Single().Name;
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
         private bool MovieExists(int id)
         {
           return (_context.Movie?.Any(e => e.MovieId == id)).GetValueOrDefault();

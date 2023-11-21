@@ -1,16 +1,13 @@
 ﻿@model IEnumerable<MVCMovieInfo.Models.Movie>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Movies</h1>
-
+<h1>@ViewData["Genre"] Movies: </h1>
 <p>
-    @*<a asp-action="Create">Create New</a>*@
-    <a class="btn btn-primary" asp-action="Create"><i class="fa-solid fa-square-plus"></i> Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-striped">
+@if(Model.Count() > 0)
+{
+   @* Afficher seulement s'il y a des films de ce genre *@
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -57,4 +54,12 @@
         </tr>
 }
     </tbody>
-</table>
+    </table>
+}
+else
+{
+    @*Afficher un bootstrap alert quand aucun film est retrouvé pour ce genre*@
+    <div class="alert alert-danger" role="alert">
+        No movies found for genre:  @ViewData["Genre"]!
+    </div>
+}

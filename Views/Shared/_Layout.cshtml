@@ -38,6 +38,8 @@
                             </a>
                         </li>
                         @*fin nouveau items*@
+
+                        @await Component.InvokeAsync("MenuWidget")
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
