@@ -1,0 +1,179 @@
+ASP.NET Core MVC - Movie Demo
+-------------------------------
+Jackson2023!
+
+1.  Création de l'application - ASP.NET Core MVC
+	- MVCMovie
+	- .NET 6/7/8
+	- Authentification:  Comptes individuels
+
+2.  Executer l'application:  Ceci va créer la base de données SQL
+	- Register 
+	- Apply Migrations
+	- Confirm account
+	- Login
+
+3. Création de nos modèles (avec les propriétés, annotations et propriétés de navigation) 
+	- Genre
+	- Movie (ou film)
+
+4. Modifier le fichier Data\ApplicationDbContext
+	- Ajouter les DbSet pour Genre et Movie
+
+5. Appliquer les migrations
+	add-migration "InitialCreate"
+	update-database
+
+6.  Voir les scripts qui sont crées et voir la base de données SQL 
+	- Affichage ->Explorateur d'objets SQL Server
+		(localDB)MSSQLLocalDB
+
+7.  Scaffold
+	- Controllers -> Ajouter ->Nouvel élément généré automatiquement
+		MVC:  Contrôleur MVC avec vues, EF
+			Classe modèle:  Genre
+			Class DbContext: ApplicationDbContect
+			Vues:  tous sélectionner
+			Nom du contrôleur:  GenreController
+		** Répéter pour Movie
+8.  Exécuter l'application
+	- Ajouter quelques genre (Action, Comedy, Horror, etc)
+	- Ajouter un film (remarquer que le prix n'accepte pas un nombre décimal)
+-------------------------------------------------------------------------------------------
+			AJOUTER PROJET - GIT ET GITHUB
+-------------------------------------------------------------------------------------------
+
+9.  Globalization (régler le problème ci-haut)
+	- Projet -> Ajouter -> Bibliothèque côté client (libman)
+		provider:  cdnjs
+		libraries:  globalize, cldrjs
+
+		provider:  jsdelivr
+		library:  jquery-validation-globalize
+
+10. Ajouter les nouveaux scripts pour globalization
+	- Views\Shared\_ValidationScriptsPartial.cshtml
+		<script src="~/lib/cldrjs/cldr.js"></script>
+		<!-- globalize script -->
+		<script src="~/lib/globalize/globalize.js"></script>
+		<!-- jquery validation script with globalize -->
+		<script src="~/lib/jquery-validation-globalize/jquery.validate.globalize.js"></script>
+
+
+11. Exécuter l'application et ajouter un movie avec un prix contenant un décimal
+
+12. Ajouter les liens au menu de navigation
+	- Enlever Privacy 
+	- Ajouter Genre et Movie
+
+------------------------------------- Mise en Page (Views):  Bootstrap --------------------------------------
+13. Ajouter un thème de Bootswatch
+	- Cyborg
+	- Remplacer le bootstrap.min.css par celui de thème
+
+14.  Ajuster la couleur du NAVBAR et des liens
+	bg-primary (navbar)
+	text-white (liens)
+	
+15.  Ajouter des icons Fontawesome - joindre et copier le script pour le kit
+      	- Views\Shared\_Layout.cshtml
+	- Views\Shared\_LoginPartial.cshtml
+
+16.  Convertir les liens "Create" en boutons pour Index View (Genre et Movie)
+	 <a class="btn btn-primary" asp-action="Create"><i class="fa-solid fa-square-plus"></i> Create New</a>
+		- Jouer avec les différentes couleurs (https://bootswatch.com/cyborg/)
+			btn-primary, btn-info, etc.
+
+17.  Ajouter des icônes aux liens Edit, Details et Delete
+	 <a asp-action="Edit" asp-route-id="@item.GenreId" class="text-warning">
+         	<i class="fa-solid fa-pen-to-square"></i> Edit
+         </a> 
+
+18.  Enlever le soulignement (underline) sur les liens Edit, Details et Delete
+     Ajouter du CSS dans le fichier:  site.css
+	.action-icons a {
+    	   text-decoration: none;
+	}
+     
+
+19.  Ajouter de l'espace (margin-top) au bouton "Save" dans Create et Edit Views avec la classe "mt-2" pour Genre et Movie
+	https://getbootstrap.com/docs/5.3/utilities/spacing/
+
+
+20.  Modifier l'arrière plan du footer (bg-secondary, text-white)
+
+----------------------- Réutilisabilité avec les View Components  --------------------------------------
+21.  Créer un View Component
+    https://learn.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-7.0
+* Ajoutez un nouveau dossier appelé "Components" directement dand le projet
+* Ajoutez une nouvelle classe appelée "MenuWidget.cs"
+* Ajouter du code à la nouvelle classe
+* Créer la vue associée "Views/Shared/Components/MenuWidget/Default.cshtml"
+    voir l'image située dans le dossier Notes :  ViewComponent-MenuWidget.jpg
+* La vue suit un chemin de recherche spécifique
+    Views -> Shared -> Components -> NewsWidget -> Default.cshtml
+* Ajouter du code pour créer le menu déroulant NavBar pour les genres
+   Basé sur : https://getbootstrap.com/docs/5.3/components/navbar/
+   copier le code static pour tester (ajouter la classe:  text-white)
+	<li class="nav-item dropdown">
+    		<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        		Dropdown
+   		 </a>
+    		<ul class="dropdown-menu">
+        		<li><a class="dropdown-item" href="#">Action</a></li>
+        		<li><a class="dropdown-item" href="#">Another action</a></li>
+        		<li><hr class="dropdown-divider"></li>
+       			<li><a class="dropdown-item" href="#">Something else here</a></li>
+    		</ul>
+	</li>
+
+
+* Ajoutez le composant terminé à la vue _Layout.cshtml
+  @await Component.InvokeAsync("MenuWidget")
+
+* Modifier le NewsWidget -> Default.cshtml pour afficher les "Genre" de films
+  <li class="nav-item dropdown">
+    <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Movies By Genre
+    </a>
+    <ul class="dropdown-menu">
+        @foreach (var item in Model)
+        {
+            <a class="dropdown-item" asp-controller="Movies" asp-action="MovieGenre" asp-route-id="@item.GenreId">@item.Name</a>
+        }
+    </ul>
+  </li>
+
+* Créez la méthode MovieGenre dans MoviesController
+* Créer la vue MovieGenre associée:  voir l'image située dans le dossier Notes :  MovieGenre-View.jpg
+
+
+------------------------------------- jQuery et Ajax  --------------------------------------
+22. Ajouter le trie, pagination, filtre avec jQuery DataTables (plugin)
+	https://datatables.net/examples/styling/bootstrap5.html
+* Ajoutez plusieurs films pour permettre la pagination de la vue Movie Index
+* Ajouter des références aux dépendances CSS et Scripts
+  @section CSS
+  @section Scripts
+* Rendre la nouvelle section CSS en ajoutant la ligne suivante à la vue Mise en page
+    @*@RenderSection("CSS", obligatoire : faux)*@
+    @await RenderSectionAsync("CSS", obligatoire : false)
+
+* Exécutez l'application, accédez à la vue Index des films et vérifiez le code source
+* Ajoutez le code jQuery pour initialiser le DataTable
+    Ajoutez d'abord un identifiant à la table, par exemple : <table class="table" id="movieTable">
+    Ajoutez les classes de table Bootstrap nécessaires à des fins de formatage et de coloration
+
+--------------------------------------  ACCOUNT -------------------------------------------------
+
+23.  Confirmation de compte et récupération de mot de passe
+     https://learn.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-8.0&tabs=visual-studio
+
+* Créer un compte SendGrid:  https://sendgrid.com/en-us
+  SendGrid est utilisé pour envoyer des e-mails. Un compte et une clé SendGrid sont nécessaires pour envoyer un e-mail.
+  Le compte SendGrid peut nécessiter l'ajout d'un expéditeur:  https://docs.sendgrid.com/ui/sending-email/senders
+		
+* Configurer les secrets utilisateur SendGrid (key):  Right-click (projet)-> Gérer les données secrètes de l'utilisateur
+
+On Windows, Secret Manager stores keys/value pairs in a secrets.json file in the %APPDATA%/Microsoft/UserSecrets/<WebAppName-userSecretsId> directory.
+C:\Users\marc.williams\AppData\Roaming\Microsoft\UserSecrets

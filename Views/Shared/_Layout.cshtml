@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - MVCMovieInfo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*DataTables plugin*@
+    @await RenderSectionAsync("CSS", required: false)
     <link rel="stylesheet" href="~/MVCMovieInfo.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -52,7 +54,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-secondary">
         <div class="container">
             &copy; 2023 - MVCMovieInfo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

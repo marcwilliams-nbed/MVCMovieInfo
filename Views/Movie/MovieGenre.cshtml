@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<MVCMovieInfo.Models.Movie>
-
-<h1>@ViewData["Genre"] Movies: </h1>
+@{
+    var genre = ViewData["Genre"];
+    var title = genre + " Movies ";
+    ViewData["Title"] = title;
+}
+@*<h1>@ViewData["Genre"] Movies: </h1>*@
+<h1>@title:</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>

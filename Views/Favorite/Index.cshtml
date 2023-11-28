@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MVCMovieInfo.Models.Favorite>
+
+@{
+    ViewData["Title"] = "Favorites";
+}
+
+<h1>Favorites</h1>
+
+<p>
+    <a asp-action="Create">Add Favorite</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+           @* <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Movie)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.Title)
+            </td>
+            <td>
+                <a asp-action="Details" asp-controller="Movie" asp-action="details" asp-route-id="@item.MovieID">View Movie</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Remove Favorite</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

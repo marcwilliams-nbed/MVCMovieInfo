@@ -29,5 +29,9 @@ namespace MVCMovieInfo.Models
 
         //========================= Navigation Properties =================================
         public virtual Genre? Genre { get; set; }//A Movie can only belong at most to one Genre 
+
+
+        //======================= New Addition: Favorite movies  =========================
+        public virtual ICollection<Favorite>? Favorites { get; set; }
     }
 }

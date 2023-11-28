@@ -4,13 +4,38 @@
     ViewData["Title"] = "Index";
 }
 
+@section CSS
+{
+    @* DataTables plugin css *@
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    @* DataTables javascript plugin *@
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        //avec JavaScript
+        // new DataTable('#movieTable');
+
+        //avec jQuery
+        $('#movieTable').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": -1 },//stop sorting on last column (Edit, Details, Delete)
+            ],
+            //Dropdown (how many entries shown at a time)
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        });
+    </script>
+}
 <h1>Movies</h1>
 
 <p>
     @*<a asp-action="Create">Create New</a>*@
     <a class="btn btn-primary" asp-action="Create"><i class="fa-solid fa-square-plus"></i> Create New</a>
 </p>
-<table class="table table-striped">
+<table class="table table-striped" id="movieTable">
     <thead>
         <tr>
             <th>
